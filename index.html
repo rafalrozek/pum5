@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canvas3</title>
+  <meta name="author" content="Rafał Rożek">
+
+  <style>
+    body {
+    margin: 0px;
+    padding: 0px;
+    }
+  </style>
+
+
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="600" />
+</body>
+<script>
+  
+    let cars = new Array();
+    let borders = new Array();
+    let lines = new Array();
+    let lane = 1;
+    let carX = 280;
+    let inGame = true;
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+
+
+    cars.push({x: 420, y: 0})
+
+
+    borders.push({x: 220, y: -200})
+    borders.push({x: 220, y: 0})
+    borders.push({x: 220, y: 200})
+    borders.push({x: 220, y: 400})
+
+
+    borders.push({x: 550, y: -200})
+    borders.push({x: 550, y: 0})
+    borders.push({x: 550, y: 200})
+    borders.push({x: 550, y: 400})
+
+
+    lines.push({x: 395, y: 500});
+    lines.push({x: 395, y: 150});
+
+    function handleKey(e) {
+        var code = e.keyCode;
+        moveKey = code;
+        switch (code) {
+            case 37: {
+                //Left key
+                lane--;
+                if(lane < 0){
+                    lane = 0;
+                } 
+                break;
+            }
+            case 39: {
+                //Right key
+                lane++;
+                if(lane > 1){
+                    lane = 1;
+                }
+                break;
+            }
+        }
+
+    }
+
+
+    async function initScene() {
+
+        while(inGame){
+            //draw grass
+            ctx.beginPath();
+            ctx.fillStyle = "green";
+            ctx.rect(0, 0, 800, 600);
+            ctx.fill();
+            ctx.closePath();
+
+            //draw track
+            ctx.beginPath();
+            ctx.fillStyle = "#333";
+            ctx.rect(250, 0, 300, 600);
+            ctx.fill();
+            ctx.closePath();
+
+            //draw car
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+                ctx.arc(carX+10, 480, 20, 0, 2 * Math.PI, false);
+                ctx.fill();
+                ctx.closePath();
+
+                ctx.beginPath();
+            ctx.fillStyle = "black";
+                ctx.arc(carX+10, 590, 20, 0, 2 * Math.PI, false);
+                ctx.fill();
+                ctx.closePath();
+
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+
+            if(lane === 0){
+                carX = 280;
+            }
+            else{
+                carX = 420;
+            }
+            ctx.rect(carX , 450, 100 , 150);
+            ctx.fill();
+            ctx.closePath();
+
+
+
+            //draw middle lines
+            lines.forEach( (l, li, lo) => {
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.rect(l.x, l.y, 10, 100);
+                ctx.fill();
+                ctx.closePath();
+
+                l.y += 3;
+                if(l.y > 600){
+                    //destroy line push new one
+                    lines.splice(li, 1);
+                    lines.push({x: 395, y: -100});
+                }
+            });
+
+            //draw borders
+            borders.forEach( (b, bi, bo) => {
+                ctx.beginPath();
+                ctx.fillStyle = "red";
+                ctx.rect(b.x, b.y, 30, 50);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.rect(b.x, b.y+50, 30, 50);
+                ctx.fill();
+                ctx.closePath();
+
+                ctx.beginPath();
+                ctx.fillStyle = "red";
+                ctx.rect(b.x, b.y+100, 30, 50);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.rect(b.x, b.y+150, 30, 50);
+                ctx.fill();
+                ctx.closePath();
+
+
+                b.y+=3;
+                
+    
+
+                if(b.y > 600){
+                    borders.splice(bi, 1);
+                    borders.push({x: b.x, y: -200})
+
+                }
+                
+            });
+
+            //draw enemys
+            cars.forEach( (c, ci, co) => {
+                ctx.beginPath();
+                ctx.fillStyle = "blue";
+                ctx.rect(c.x, c.y, 100, 150);
+                ctx.fill();
+                ctx.closePath();
+
+                c.y++;
+
+                if(c.x == carX && c.y >= 300){
+                    inGame = false;
+                    ctx.font = '60px serif';
+                    ctx.fillStyle = "white";
+                    ctx.fillText('Game over', 270, 200);
+                }
+
+                if(c.y > 600){
+                    cars.splice(ci, 1);
+                    if(Math.random() > 0.5){
+                        cars.push({x: 420, y: -150});
+                    }
+                    else{
+                        cars.push({x: 280, y: -150});
+                    }
+                    
+                }
+            });
+
+
+            await new Promise(r => setTimeout(r, 1));
+        }
+
+
+
+
+        }
+    
+
+    window.onload = initScene;
+    window.addEventListener('keydown',this.handleKey,false);
+
+
+</script>
+</html>
