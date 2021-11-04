@@ -31,6 +31,7 @@
     let carX = 280;
     let inGame = true;
     let points = 0;
+    var lastShoot = new Date().getTime();
 
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
@@ -59,53 +60,18 @@
 
     bonuses.push({x: randomIntFromInterval(280, 500), y: 0})
 
-    function handleKey(e) {
-        var code = e.keyCode;
-        moveKey = code;
-        switch (code) {
-            case 37: {
-                //Left key
-                carX -= 5;
-                if(carX < 280){
-                    carX = 280;
-                } 
-                break;
-            }
-            case 39: {
-                //Right key
-                carX += 5;
-                if(carX > 420){
-                    carX = 420;
-                }
-                break;
-            }
-            case 32: {
-                //Space
-                balls.push({x:carX+50, y:450})}
-                break;
-            } 
-    }
-
-    function handleSpace(e) {
-        var code = e.keyCode;
-        moveKey = code;
-        switch (code) {
-        
-            case 32: {
-                //Space
-                balls.push({x:carX+50, y:450})}
-                break;
-            } 
-    }
-
-    
-
 
     async function initScene() {
 
         while(inGame){
             if(pressedKeys[32]){
-                balls.push({x:carX+50, y:450})
+                currDate = new Date().getTime();
+                console.log(currDate-lastShoot)
+                if(currDate - lastShoot > 200){
+                    lastShoot = currDate;
+                    balls.push({x:carX+50, y:450})
+                }
+
             }
             if(pressedKeys[37]){
                 carX -= 2;
