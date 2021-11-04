@@ -55,17 +55,17 @@
         switch (code) {
             case 37: {
                 //Left key
-                lane--;
-                if(lane < 0){
-                    lane = 0;
+                carX -= 5;
+                if(carX < 280){
+                    carX = 280;
                 } 
                 break;
             }
             case 39: {
                 //Right key
-                lane++;
-                if(lane > 1){
-                    lane = 1;
+                carX += 5;
+                if(carX > 420){
+                    carX = 420;
                 }
                 break;
             }
@@ -107,12 +107,7 @@
             ctx.beginPath();
             ctx.fillStyle = "red";
 
-            if(lane === 0){
-                carX = 280;
-            }
-            else{
-                carX = 420;
-            }
+
             ctx.rect(carX , 450, 100 , 150);
             ctx.fill();
             ctx.closePath();
