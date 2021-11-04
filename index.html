@@ -24,6 +24,7 @@
     let borders = new Array();
     let lines = new Array();
     let balls = new Array();
+    let bonuses = new Array();
 
     let lane = 1;
     let carX = 280;
@@ -32,6 +33,9 @@
 
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
+    function randomIntFromInterval(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
 
     cars.push({x: 420, y: 0})
@@ -51,6 +55,8 @@
 
     lines.push({x: 395, y: 500});
     lines.push({x: 395, y: 150});
+
+    bonuses.push({x: randomIntFromInterval(280, 500), y: 0})
 
     function handleKey(e) {
         var code = e.keyCode;
@@ -229,13 +235,33 @@
                 b.y--;
             })
 
+            bonuses.forEach( (b, bi, bo)=> {
+                ctx.beginPath();
+                ctx.fillStyle = "orange";
+                ctx.arc(b.x, b.y, 10, 0, 2 * Math.PI, false);
+                ctx.fill();
+                ctx.closePath();
+
+                b.y += 1.5;
+
+                if(b.y > 600){
+                    bonuses.splice(bi, 1);
+                    bonuses.push({x: randomIntFromInterval(280,500), y: 0})
+                }
+
+                if(b.x > carX-100 && b.x < carX + 100 && b.y >= 450){
+                    points++;
+                    bonuses.splice(bi, 1);
+                    bonuses.push({x: randomIntFromInterval(280,500), y: 0})
+                }
+            })
+
+
             balls.forEach( (b, bi, bo) => {
                 cars.forEach( (c, ci, co)=> { 
                     if(b.x > c.x && b.x < (c.x + 100) && b.y < c.y+150){
                         balls.splice(bi, 1);
                         cars.splice(ci, 1);
-                        points++;
-                        console.log("Point!")
 
                         if(Math.random() > 0.5){
                         cars.push({x: 420, y: -150});
@@ -251,7 +277,10 @@
                 }
             })
 
-
+            //draw score
+            ctx.font = '26px serif';
+            ctx.fillStyle = "white";
+            ctx.fillText(points + ' points', 700, 50);
             await new Promise(r => setTimeout(r, 1));
         }
 
