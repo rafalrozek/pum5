@@ -112,15 +112,28 @@
             //draw car
             ctx.beginPath();
             ctx.fillStyle = "black";
-                ctx.arc(carX+10, 480, 20, 0, 2 * Math.PI, false);
-                ctx.fill();
-                ctx.closePath();
-
-                ctx.beginPath();
+            ctx.arc(carX+10, 480, 20, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.beginPath();
             ctx.fillStyle = "black";
-                ctx.arc(carX+10, 590, 20, 0, 2 * Math.PI, false);
-                ctx.fill();
-                ctx.closePath();
+            ctx.arc(carX+90, 480, 20, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
+
+
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.arc(carX+10, 590, 20, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.arc(carX+90, 590, 20, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.closePath();
 
             ctx.beginPath();
             ctx.fillStyle = "red";
@@ -182,6 +195,8 @@
                     ctx.font = '60px serif';
                     ctx.fillStyle = "white";
                     ctx.fillText('Game over', 270, 200);
+                    ctx.fillStyle = "black";
+                    ctx.fillText('Game over', 270, 197);
                 }
 
                 if(c.y > 600){
