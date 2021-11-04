@@ -25,6 +25,7 @@
     let lines = new Array();
     let balls = new Array();
     let bonuses = new Array();
+    var pressedKeys = {};
 
     let lane = 1;
     let carX = 280;
@@ -82,8 +83,20 @@
                 //Space
                 balls.push({x:carX+50, y:450})}
                 break;
-            } //Space
-        }
+            } 
+    }
+
+    function handleSpace(e) {
+        var code = e.keyCode;
+        moveKey = code;
+        switch (code) {
+        
+            case 32: {
+                //Space
+                balls.push({x:carX+50, y:450})}
+                break;
+            } 
+    }
 
     
 
@@ -91,6 +104,22 @@
     async function initScene() {
 
         while(inGame){
+            if(pressedKeys[32]){
+                balls.push({x:carX+50, y:450})
+            }
+            if(pressedKeys[37]){
+                carX -= 2;
+                if(carX < 280){
+                    carX = 280;
+                } 
+            }
+            if(pressedKeys[39]){
+                carX += 2;
+                if(carX > 420){
+                    carX = 420;
+                }
+            }
+
             //draw grass
             ctx.beginPath();
             ctx.fillStyle = "green";
@@ -293,6 +322,8 @@
     window.onload = initScene;
     window.addEventListener('keydown',this.handleKey,false);
 
+    window.onkeyup = function(e) { pressedKeys[e.keyCode] = false; }
+window.onkeydown = function(e) { pressedKeys[e.keyCode] = true; }
 
 </script>
 </html>
