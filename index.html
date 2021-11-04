@@ -23,9 +23,12 @@
     let cars = new Array();
     let borders = new Array();
     let lines = new Array();
+    let balls = new Array();
+
     let lane = 1;
     let carX = 280;
     let inGame = true;
+    let points = 0;
 
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
@@ -69,9 +72,14 @@
                 }
                 break;
             }
+            case 32: {
+                //Space
+                balls.push({x:carX+50, y:450})}
+                break;
+            } //Space
         }
 
-    }
+    
 
 
     async function initScene() {
@@ -210,6 +218,38 @@
                     
                 }
             });
+
+            balls.forEach( b => {
+                ctx.beginPath();
+                ctx.fillStyle = "yellow";
+                ctx.arc(b.x, b.y, 6, 0, 2 * Math.PI, false);
+                ctx.fill();
+                ctx.closePath();
+
+                b.y--;
+            })
+
+            balls.forEach( (b, bi, bo) => {
+                cars.forEach( (c, ci, co)=> { 
+                    if(b.x > c.x && b.x < (c.x + 100) && b.y < c.y+150){
+                        balls.splice(bi, 1);
+                        cars.splice(ci, 1);
+                        points++;
+                        console.log("Point!")
+
+                        if(Math.random() > 0.5){
+                        cars.push({x: 420, y: -150});
+                    }
+                    else{
+                        cars.push({x: 280, y: -150});
+                    }
+                    }
+                })
+
+                if(b.y < 0){
+                    balls.splice(bi, 1);
+                }
+            })
 
 
             await new Promise(r => setTimeout(r, 1));
