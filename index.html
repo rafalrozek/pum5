@@ -287,6 +287,10 @@
             ctx.font = '26px serif';
             ctx.fillStyle = "white";
             ctx.fillText(points + ' points', 700, 50);
+
+            ctx.font = '18px serif';
+            ctx.fillStyle = "white";
+            ctx.fillText('Speed: ' + Math.round(speed * 100) + "km/h", 670, 80);
             await new Promise(r => setTimeout(r, 1));
         }
 
