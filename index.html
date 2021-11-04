@@ -31,6 +31,7 @@
     let carX = 280;
     let inGame = true;
     let points = 0;
+    let speed = 1;
     var lastShoot = new Date().getTime();
 
     var c = document.getElementById("myCanvas");
@@ -66,7 +67,6 @@
         while(inGame){
             if(pressedKeys[32]){
                 currDate = new Date().getTime();
-                console.log(currDate-lastShoot)
                 if(currDate - lastShoot > 200){
                     lastShoot = currDate;
                     balls.push({x:carX+50, y:450})
@@ -85,6 +85,17 @@
                     carX = 420;
                 }
             }
+            if(pressedKeys[38]){
+                //up
+                speed += 0.005;
+            }
+            if(pressedKeys[40]){
+                //down
+                speed -= 0.005;
+                if(speed < 1){
+                    speed = 1;
+                }
+            }
 
             //draw grass
             ctx.beginPath();
@@ -99,7 +110,7 @@
             ctx.rect(250, 0, 300, 600);
             ctx.fill();
             ctx.closePath();
-
+            console.log(speed)
 
 
             //draw middle lines
@@ -110,7 +121,7 @@
                 ctx.fill();
                 ctx.closePath();
 
-                l.y += 3;
+                l.y += 3*speed;
                 if(l.y > 600){
                     //destroy line push new one
                     lines.splice(li, 1);
@@ -177,7 +188,7 @@
                 ctx.closePath();
 
 
-                b.y+=3;
+                b.y+=3*speed;
                 
     
 
@@ -197,7 +208,7 @@
                 ctx.fill();
                 ctx.closePath();
 
-                c.y++;
+                c.y += 1 * speed;
 
                 if(c.x > carX-100 && c.x < carX+100 && c.y >= 300){
                     inGame = false;
@@ -237,7 +248,7 @@
                 ctx.fill();
                 ctx.closePath();
 
-                b.y += 1.5;
+                b.y += 1.5 * speed;
 
                 if(b.y > 600){
                     bonuses.splice(bi, 1);
