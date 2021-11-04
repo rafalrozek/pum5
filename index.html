@@ -91,6 +91,24 @@
             ctx.fill();
             ctx.closePath();
 
+
+
+            //draw middle lines
+            lines.forEach( (l, li, lo) => {
+                ctx.beginPath();
+                ctx.fillStyle = "white";
+                ctx.rect(l.x, l.y, 10, 100);
+                ctx.fill();
+                ctx.closePath();
+
+                l.y += 3;
+                if(l.y > 600){
+                    //destroy line push new one
+                    lines.splice(li, 1);
+                    lines.push({x: 395, y: -100});
+                }
+            });
+
             //draw car
             ctx.beginPath();
             ctx.fillStyle = "black";
@@ -111,24 +129,6 @@
             ctx.rect(carX , 450, 100 , 150);
             ctx.fill();
             ctx.closePath();
-
-
-
-            //draw middle lines
-            lines.forEach( (l, li, lo) => {
-                ctx.beginPath();
-                ctx.fillStyle = "white";
-                ctx.rect(l.x, l.y, 10, 100);
-                ctx.fill();
-                ctx.closePath();
-
-                l.y += 3;
-                if(l.y > 600){
-                    //destroy line push new one
-                    lines.splice(li, 1);
-                    lines.push({x: 395, y: -100});
-                }
-            });
 
             //draw borders
             borders.forEach( (b, bi, bo) => {
@@ -177,7 +177,7 @@
 
                 c.y++;
 
-                if(c.x == carX && c.y >= 300){
+                if(c.x > carX-100 && c.x < carX+100 && c.y >= 300){
                     inGame = false;
                     ctx.font = '60px serif';
                     ctx.fillStyle = "white";
